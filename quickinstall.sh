@@ -109,17 +109,6 @@ install() {
         run_ok
         printf >> "${run_logfile}" "OK\n"
 }
-logging "Checking the latest version of static build..."
-
-logging "Checking the latest version of static build..."
-
-logging "Installing netdata"
-
-run_ok
-
-run_failed
-
-fatal
 
 apt-get -y install gcc
 apt-get -y install build-essential
@@ -155,4 +144,3 @@ make && make install
 useradd  -G www-data -m -s /bin/false netflow
 
 #nfcapd -w -D -p 9996 -u netflow -g www-data -S 1 -z -I ASA5515 -l /data/nfcap/ASA5515
-
