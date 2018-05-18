@@ -110,20 +110,25 @@ install() {
         printf >> "${run_logfile}" "OK\n"
 }
 
-apt-get -y install gcc
-apt-get -y install build-essential
-apt-get -y install make
-apt-get -y install tcpdump
-apt-get -y install net-tools
-apt-get -y install linux-headers-$(uname -r)
-apt-get -y install git
-apt-get -y install libtool
-apt-get -y install pkg-config
-apt-get -y install libbz2-dev
-apt-get -y install autoconf
-apt-get -y install bison
-apt-get -y install flex
-apt-get -y install librrd-dev
+curl -sL https://deb.nodesource.com/setup_8.x | bash - | apt-get update
+
+install gcc
+install build-essential
+install make
+install tcpdump
+install net-tools
+install linux-headers-$(uname -r)
+install git
+install libtool
+install pkg-config
+install libbz2-dev
+install autoconf
+install bison
+install flex
+install librrd-dev
+install nodejs
+
+npm install --global csv2json
 
 git clone https://github.com/phaag/nfdump.git
 
