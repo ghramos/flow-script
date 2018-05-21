@@ -12,8 +12,8 @@ echo '['$$']' - $scriptName start
 
 nfdump -r $1 -s ip/flows -o csv > $output
 
-top_10=`sed -n '1,11p' $output | csv2json`
-summary=`sed -n '14,15p' $output | csv2json | sed -n '2p'`
+top_10=$(sed -n '1,11p' $output | csv2json)
+summary=$(sed -n '14,15p' $output | csv2json | sed -n '2p')
 
 echo '{ "top_10": '  $top_10  ', "summary":'  $summary  ' }' > $data
 
