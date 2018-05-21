@@ -12,11 +12,8 @@ last_nfcap=`ls -lt /data/nfcap/ASA5515/$year/$month/$day/ | sed -n '2p' | cut -d
 
 #echo  This file is being analized: $last_nfcap "\n"
 
-nfdump -r /data/nfcap/ASA5515/$year/$month/$day/$last_nfcap -s ip/flows -o csv > tmp/output.csv
+#scripts/flowByIP.sh /data/nfcap/ASA5515/$year/$month/$day/$last_nfcap
 
-#cat tmp/output.csv
-
-top_10=`sed -n '1,11p' tmp/output.csv | csv2json`
-summary=`sed -n '14,15p' tmp/output.csv | csv2json`
-
-echo '{ "top_10": '  $top_10  ', "summary":'  $summary  ' }' > data/output.json
+for file in scripts/*; do
+    [ -f "$file" ] && [ -x "$file" ] && "$file" /data/nfcap/ASA5515/$year/$month/$day/$last_nfcap
+done
