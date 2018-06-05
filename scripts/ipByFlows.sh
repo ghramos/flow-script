@@ -1,14 +1,15 @@
 #!/bin/sh
+#. ./utils.sh
 
 # First argument is the path of the nfcap file
 scriptName='ipByFlows'
-data_path='/home/netflow/git/flow-script/data/'
+data_path='/var/www/html/data/'
 tmp_path='/home/netflow/git/flow-script/tmp/'
 
 output="${tmp_path}${scriptName}.csv"
 data="${data_path}${scriptName}.json"
 
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start
+#logging $0 $$ "Start"
 
 nfdump -r $1 -s ip/flows -o csv > $output
 
@@ -17,4 +18,4 @@ summary=$(sed -n '14,15p' $output | csv2json | sed -n '2p')
 
 echo '{ "top_10": '  $top_10  ', "summary":'  $summary  ' }' > $data
 
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End
+#logging $0 $$ "End"
