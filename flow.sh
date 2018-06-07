@@ -26,7 +26,7 @@ do
 		echo $(date +"%b %d %H:%M:%S") mainProcess'['$$']:' This file is being analized: $current_nfcap
 
 		for file in scripts/*; do
-			[ -f "$file" ] && [ -x "$file" ] && "$file" /data/nfcap/ASA5515/$year/$month/$day/$current_nfcap
+			[ -f "$file" ] && [ -x "$file" ] && "$file" /data/nfcap/ASA5515/$year/$month/$day/$current_nfcap /data/nfcap/ASA5515/$year/$month/$day/
 		done
 
 #		logging $0 $$ " End main script..."

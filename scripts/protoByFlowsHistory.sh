@@ -16,24 +16,28 @@ echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start
 
 nfdump -r $1 -s proto -o csv > $output
 
-num=$(cat $output | wc -l)
+tcpNum=$(grep -n 'TCP' $output | cut -c1)
+udpNum=$(grep -n 'UDP' $output | cut -c1)
+icmpNum=$(grep -n 'ICMP,' $output| cut -c1)
 
 sed -i "1s/^/hora,/" $output
 sed -i "2s/^/${hora},/" $output
 sed -i "3s/^/${hora},/" $output
 sed -i "4s/^/${hora},/" $output
+sed -i "5s/^/${hora},/" $output
 
-if [ $num -gt 8 ];
-then
-	sed -i "5s/^/${hora},/" $output
-	icmp=$(sed -n '1,2p' $output | csv2json | sed -n '2p')
-	udp=$(sed -n '1,4p' $output | sed '2,3d' | csv2json | sed -n '2p')
-	tcp=$(sed -n '1,5p' $output | sed '2,4d' | csv2json | sed -n '2p')
-else
-        icmp=$(sed -n '1,2p' $output | csv2json | sed -n '2p')
-        udp=$(sed -n '1,3p' $output | sed '2d' | csv2json | sed -n '2p')
-        tcp=$(sed -n '1,4p' $output | sed '2,3d' | csv2json | sed -n '2p')
-fi
+#sed -n "1,${tcpNum}p" $output
+#sed -n "1,${udpNum}p" $output
+#sed -n "1,${icmpNum}p" $output
+
+tcp=$(sed -n "1,${tcpNum}p" $output |  csv2json | sed -n "${tcpNum}p")
+udp=$(sed -n "1,${udpNum}p" $output |  csv2json | sed -n "${udpNum}p")
+icmp=$(sed -n "1,${icmpNum}p" $output | csv2json | sed -n "${icmpNum}p")
+
+#echo "TCP"$tcp"\n"
+#echo "UDP"$udp"\n"
+#echo "ICMP"$icmp"\n"
+
 
 sed -i "3s/$/,${tcp}/" $data
 sed -i "6s/$/,${udp}/" $data
@@ -41,4 +45,3 @@ sed -i "9s/$/,${icmp}/" $data
 
 #logging $0 $$ "End"
 echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End
-
