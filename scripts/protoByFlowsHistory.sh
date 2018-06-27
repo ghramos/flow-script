@@ -5,6 +5,7 @@
 scriptName='protoByFlowsHistory'
 data_path='/var/www/html/data/'
 tmp_path='/home/netflow/git/flow-script/tmp/'
+log='/var/www/html/log/flow.log'
 
 output="${tmp_path}${scriptName}.csv"
 data="${data_path}${scriptName}.json"
@@ -12,7 +13,7 @@ data="${data_path}${scriptName}.json"
 hora=$(date +"%H:%M")
 
 #logging $0 $$ "Start"
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start
+echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start >> $log
 
 nfdump -r $1 -s proto -o csv > $output
 
@@ -26,22 +27,13 @@ sed -i "3s/^/${hora},/" $output
 sed -i "4s/^/${hora},/" $output
 sed -i "5s/^/${hora},/" $output
 
-#sed -n "1,${tcpNum}p" $output
-#sed -n "1,${udpNum}p" $output
-#sed -n "1,${icmpNum}p" $output
-
 tcp=$(sed -n "1,${tcpNum}p" $output |  csv2json | sed -n "${tcpNum}p")
 udp=$(sed -n "1,${udpNum}p" $output |  csv2json | sed -n "${udpNum}p")
 icmp=$(sed -n "1,${icmpNum}p" $output | csv2json | sed -n "${icmpNum}p")
-
-#echo "TCP"$tcp"\n"
-#echo "UDP"$udp"\n"
-#echo "ICMP"$icmp"\n"
-
 
 sed -i "3s/$/,${tcp}/" $data
 sed -i "6s/$/,${udp}/" $data
 sed -i "9s/$/,${icmp}/" $data
 
 #logging $0 $$ "End"
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End
+echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End >> $log

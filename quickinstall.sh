@@ -101,13 +101,14 @@ install() {
 	apt-get -y install "${1}"
 	local ret=$?
 
-	if [ ${ret} -ne 0 ]
+	if [ ${ret} -ne 0 ];
         then
         run_failed
         printf >> "${run_logfile}" "FAILED with exit code ${ret}\n"
     else
         run_ok
         printf >> "${run_logfile}" "OK\n"
+    fi
 }
 
 curl -sL https://deb.nodesource.com/setup_8.x | bash - 

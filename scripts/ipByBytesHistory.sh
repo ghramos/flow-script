@@ -5,6 +5,7 @@
 scriptName='ipByBytesHistory'
 data_path='/var/www/html/data/'
 tmp_path='/home/netflow/git/flow-script/tmp/'
+log='/var/www/html/log/flow.log'
 
 hora=$(date +"%H:%M")
 
@@ -12,7 +13,7 @@ output="${tmp_path}${scriptName}.csv"
 data="${data_path}${scriptName}.json"
 
 #logging $0 $$ "Start"
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start
+echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' Start >> $log
 
 nfdump -r $1 -s ip/bytes -o csv > $output
 
@@ -24,5 +25,4 @@ summary=$(sed -n '14,15p' $output | csv2json | sed -n '2p')
 sed -i "3s/$/,${summary}/" $data
 
 #logging $0 $$ "End"
-echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End
-
+echo $(date +"%b %d %H:%M:%S") $scriptName'['$$']:' End >> $log
